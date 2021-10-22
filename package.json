@@ -34,8 +34,8 @@
     "xss": "^1.0.8"
   },
   "scripts": {
-    "dev": "concurrently -n 'server,client' -c 'red,green'  \"nodemon app.js\" \"NODE_ENV=dev PORT=443 react-scripts start\"",
-    "production": "concurrently -n 'server,client' -c 'red,green'  \"nodemon app.js\" \"NODE_ENV=production react-scripts start\"",
+    "dev": "concurrently -n 'server,client' -c 'red,green'  \"nodemon app.js\" \"NODE_ENV=dev PORT=4001 react-scripts start\"",
+    "production": "concurrently -n 'server,client' -c 'red,green'  \"nodemon app.js\" \"NODE_ENV=production PORT=443 react-scripts start\"",
     "server": "NODE_ENV=production nodemon app.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
