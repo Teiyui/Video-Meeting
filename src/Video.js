@@ -26,7 +26,10 @@ var connections = {}
 const peerConnectionConfig = {
 	'iceServers': [
 		// { 'urls': 'stun:stun.services.mozilla.com' },
-		{ 'urls': 'stun:stun.l.google.com:19302' },
+		// { 'urls': 'stun:stun.l.google.com:19302' },
+		{'urls': 'turn:49.235.113.88:3478',
+			'credential': "123456",
+			'username': "teiyui"}
 	]
 }
 var socket = null

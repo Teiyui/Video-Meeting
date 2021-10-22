@@ -1,12 +1,18 @@
 const express = require('express')
 const http = require('http')
+const https = require('https')
+var fs = require('fs')
 var cors = require('cors')
 const app = express()
 const bodyParser = require('body-parser')
 const path = require("path")
 var xss = require("xss")
 
-var server = http.createServer(app)
+var options = {
+	key  : fs.readFileSync('./cert/youwzhen.com.key'),
+	cert : fs.readFileSync('./cert/youwzhen.com.pem')
+}
+var server = https.createServer(options, app)
 var io = require('socket.io')(server)
 
 app.use(cors())
@@ -31,17 +37,24 @@ timeOnline = {}
 io.on('connection', (socket) => {
 
 	socket.on('join-call', (path) => {
+		// 点击Video.js中462行的Connect按钮时会传入页面的window.location.href
 		if(connections[path] === undefined){
+			// 该路径名作为一个key，类型为集合
 			connections[path] = []
 		}
+		// 往该key中放入当前room的socket.id
 		connections[path].push(socket.id)
 
+		// 记录启动room会议的时间
 		timeOnline[socket.id] = new Date()
 
 		for(let a = 0; a < connections[path].length; ++a){
-			io.to(connections[path][a]).emit("user-joined", socket.id, connections[path])
+			// 每当一个用户加入会议，便遍历所有room集合中的所有用户
+			io.to(connections[path][a]).emit("user-joined", socket.id, connections[path]) // 发给除自己之外的房间内的所有人
+			console.log('Current path: , there is a room existed in this path', connections[path], connections[path][a])
 		}
 
+		// chat room
 		if(messages[path] !== undefined){
 			for(let a = 0; a < messages[path].length; ++a){
 				io.to(socket.id).emit("chat-message", messages[path][a]['data'], 
@@ -52,10 +65,12 @@ io.on('connection', (socket) => {
 		console.log(path, connections[path])
 	})
 
+	// 建立P2P连接
 	socket.on('signal', (toId, message) => {
 		io.to(toId).emit('signal', socket.id, message)
 	})
 
+	// 聊天消息
 	socket.on('chat-message', (data, sender) => {
 		data = sanitizeString(data)
 		sender = sanitizeString(sender)
