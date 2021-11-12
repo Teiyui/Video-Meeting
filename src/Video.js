@@ -20,14 +20,14 @@ import Modal from 'react-bootstrap/Modal'
 import 'bootstrap/dist/css/bootstrap.css'
 import "./Video.css"
 
-const server_url = process.env.NODE_ENV === 'production' ? 'https://video.sebastienbiollo.com' : "https://10.224.77.216:4001"
+const server_url = process.env.NODE_ENV === 'production' ? 'https://video.sebastienbiollo.com' : "https://10.224.77.216:443"
 
 var connections = {}
 const peerConnectionConfig = {
 	'iceServers': [
 		// { 'urls': 'stun:stun.services.mozilla.com' },
 		// { 'urls': 'stun:stun.l.google.com:19302' },
-		{'urls': 'turn:49.235.113.88:3478',
+		{'urls': 'turn:10.224.77.216:3478',
 			'credential': "123456",
 			'username': "teiyui"}
 	]
