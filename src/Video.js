@@ -20,7 +20,7 @@ import Modal from 'react-bootstrap/Modal'
 import 'bootstrap/dist/css/bootstrap.css'
 import "./Video.css"
 
-const server_url = process.env.NODE_ENV === 'production' ? 'https://video.sebastienbiollo.com' : "https://localhost:443"
+const server_url = process.env.NODE_ENV === 'production' ? 'https://video.sebastienbiollo.com' : "https://localhost:4001"
 
 var connections = {}
 const peerConnectionConfig = {
@@ -295,7 +295,9 @@ class Video extends Component {
 			})
 
 			socket.on('user-joined', (id, clients) => {
+				// socketListId为当前房间url中的所有socket.id
 				clients.forEach((socketListId) => {
+					// 与房间url中每一个用户建立PeerConnection连接
 					connections[socketListId] = new RTCPeerConnection(peerConnectionConfig)
 					// Wait for their ice candidate       
 					connections[socketListId].onicecandidate = function (event) {
