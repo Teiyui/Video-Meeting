@@ -13,7 +13,6 @@ var options = {
 	cert : fs.readFileSync('./cert/youwzhen.com.pem')
 }
 var server = https.createServer(options, app)
-var io = require('socket.io')(server)
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -33,6 +32,8 @@ sanitizeString = (str) => {
 connections = {}
 messages = {}
 timeOnline = {}
+
+var io = require('socket.io')(server)
 
 io.on('connection', (socket) => {
 
