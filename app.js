@@ -23,7 +23,7 @@ if(process.env.NODE_ENV==='production'){
 		res.sendFile(path.join(__dirname+"/build/index.html"))
 	})
 }
-app.set('port', (process.env.PORT || 443))
+app.set('port', (process.env.PORT || 4001))
 
 sanitizeString = (str) => {
 	return xss(str)
